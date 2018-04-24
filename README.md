@@ -104,4 +104,20 @@ stty -F /dev/serial0 19200
 echo -e "This is a test.\\n\\n\\n" > /dev/serial0
 ```
 
-"**This is a test.**" should print.
+"*This is a test.*" should print.
+
+### printer libraries and drivers
+
+Install all these packages:
+```bash
+sudo apt-get install -y git libcups2-dev libcupsimage2-dev cups lpr build-essential system-config-printer wiringpi python-serial python-pil python-unidecode
+```
+
+Install printer drivers:
+```bash
+cd ~
+git clone https://github.com/adafruit/zj-58
+cd zj-58
+make
+sudo ./install
+```
