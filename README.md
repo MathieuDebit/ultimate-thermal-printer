@@ -50,7 +50,7 @@ Insert the SD Card into the Raspberry Pi. Boot and wait a minute.
 ### Step 3: First Boot
 
 #### Login over Wifi
-Default user is *pi* with a password of *raspberry*.
+Default user is **pi** with a password of **raspberry**.
 Be sure your computer and Raspberry Pi are connected to the same local network.
 
 ```bash
