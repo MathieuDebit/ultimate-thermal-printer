@@ -46,3 +46,24 @@ diskutil eject /dev/disk2
 ```
 
 Insert the SD Card into the Raspberry Pi. Boot and wait a minute.
+
+### Step 3: First Boot
+
+#### Login over Wifi
+Default user is *pi* with a password of *raspberry*.
+Be sure your computer and Raspberry Pi are connected to the same local network.
+
+```bash
+# Remove any previous pi@raspberry.local hosts in SSH config
+ssh-keygen -R raspberrypi.local
+
+# Connect to Raspberry Pi
+ssh pi@raspberrypi.local
+```
+
+#### Configuration & Updates
+
+Configure the Raspberry Pi:
+```bash
+sudo raspi-config
+```
