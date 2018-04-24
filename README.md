@@ -88,8 +88,20 @@ The Raspberry Pi is now ready to be setup for the printer.
 
 ## System configuration for printer
 
-Run `sudo raspi-config` and update Serial configuration
+### update Serial configuration
+Run `sudo raspi-config`:
 - Interfacing Options
   - Serial > Turn **OFF** the **login shell** over serial, and **ENABLE** the hardware **serial port**. **NO** and **YES**, respectively.
 
 Reboot the Raspberry Pi: `sudo reboot`.
+
+### Printer configuration
+
+Connect the printer to the correct Pins in the Raspberry Pi, and try to print some text:
+
+```bash
+stty -F /dev/serial0 19200
+echo -e "This is a test.\\n\\n\\n" > /dev/serial0
+```
+
+"**This is a test.**" should print.
