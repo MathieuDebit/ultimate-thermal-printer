@@ -67,3 +67,15 @@ Configure the Raspberry Pi:
 ```bash
 sudo raspi-config
 ```
+
+- Change User Password
+- Network Options
+  - Change Hostname
+- Localisation Options
+  - Change Locale > Add `en_US.UTF-8 UTF-8`, `fr_FR.UTF-8 UTF-8` and use `fr_FR.UTF-8 UTF-8` as default locale
+  - Change Timezone > `Europe/Paris`
+  - Change Keyboard Layout
+  - Change Wi-fi country > `FR France`
+
+Select `Finish` and reboot the Raspberry Pi. Connect with `pi@<HOSTNAME>` and new password.
+  
