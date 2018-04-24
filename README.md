@@ -77,5 +77,5 @@ sudo raspi-config
   - Change Keyboard Layout
   - Change Wi-fi country > `FR France`
 
-Select `Finish` and reboot the Raspberry Pi. Connect with `pi@<HOSTNAME>` and new password.
+Select `Finish` and reboot the Raspberry Pi with `sudo reboot`. Then connect with `pi@<HOSTNAME>` and new password.
   
