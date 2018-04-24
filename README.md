@@ -61,7 +61,7 @@ ssh-keygen -R raspberrypi.local
 ssh pi@raspberrypi.local
 ```
 
-#### Configuration & Updates
+#### Basic System Configuration
 
 Configure the Raspberry Pi:
 ```bash
@@ -77,5 +77,11 @@ sudo raspi-config
   - Change Keyboard Layout
   - Change Wi-fi country > `FR France`
 
-Select `Finish` and reboot the Raspberry Pi with `sudo reboot`. Then connect with `pi@<HOSTNAME>` and new password.
-  
+Select `Finish` and reboot the Raspberry Pi with `sudo reboot`. Then connect with `pi@<HOSTNAME>` and the new password.
+
+#### Updates
+```bash
+sudo apt update -y && sudo apt upgrade -y
+```
+
+The Raspberry Pi is now ready to be setup for the printer.
