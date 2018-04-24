@@ -8,7 +8,7 @@
 
 ### Step 2: Prepare SD Card
 
-```
+```bash
 # List disk
 diskutil list
 
@@ -29,7 +29,7 @@ vim /Volumes/boot/wpa_supplicant.conf
 ```
 
 Add the following:
-```
+```bash
 country=FR
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
@@ -41,7 +41,7 @@ network={
 ```
 
 Eject the SD Card:
-```
+```bash
 diskutil eject /dev/disk2
 ```
 
