@@ -3,10 +3,10 @@
 
 ## Linux Installation and Configuration
 
-### Step 1: Download Raspbian Lite
+### Download Raspbian Lite
 > https://www.raspberrypi.org/downloads/raspbian/
 
-### Step 2: Prepare SD Card
+### Prepare SD Card
 
 ```bash
 # List disk
@@ -47,7 +47,7 @@ diskutil eject /dev/disk2
 
 Insert the SD Card into the Raspberry Pi. Boot and wait a minute.
 
-### Step 3: First Boot
+### First Boot
 
 #### Login over Wifi
 Default user is **pi** with a password of **raspberry**.
@@ -85,3 +85,11 @@ sudo apt update -y && sudo apt upgrade -y
 ```
 
 The Raspberry Pi is now ready to be setup for the printer.
+
+## System configuration for printer
+
+Run `sudo raspi-config` and update Serial configuration
+- Interfacing Options
+  - Serial > Turn **OFF** the **login shell** over serial, and **ENABLE** the hardware **serial port**. **NO** and **YES**, respectively.
+
+Reboot the Raspberry Pi: `sudo reboot`.
