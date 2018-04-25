@@ -130,7 +130,7 @@ sudo lpadmin -p ZJ-58 -E -v serial:/dev/serial0?baud=19200 -m zjiang/ZJ-58.ppd
 sudo lpoptions -d ZJ-58
 
 # Share printer on the local network
-cupsctl --share-printers
+sudo cupsctl --share-printers
 ```
 
 Reboot the Raspberry Pi: `sudo reboot`.
