@@ -162,3 +162,7 @@ The printer is now ready to be used via command line, or over the network.
 - https://learn.adafruit.com/pi-thermal-printer/raspberry-pi-os-setup
 - https://learn.adafruit.com/networked-thermal-printer-using-cups-and-raspberry-pi
 - https://www.cups.org/doc/sharing.html
+- https://wiki.archlinux.org/index.php/systemd-timesyncd
+- https://bbs.archlinux.org/viewtopic.php?id=182600
+- https://www.linuxquestions.org/questions/linux-newbie-8/where-does-raspbian-stretch-assign-default-ntp-servers-4175618162/
+- https://unix.stackexchange.com/questions/284354/problems-with-timesyncd-or-networkd
