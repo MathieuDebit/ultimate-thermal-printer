@@ -75,7 +75,7 @@ sudo raspi-config
 - Network Options
   - Change Hostname
 - Localisation Options
-  - Change Locale > Add `en_US.UTF-8 UTF-8`, `fr_FR.UTF-8 UTF-8`
+  - Change Locale > Add any locale you need (like `fr_FR.UTF-8 UTF-8`)
   - Change Timezone > `Europe/Paris`
   - Change Keyboard Layout
   - Change Wi-fi country > `FR France`
