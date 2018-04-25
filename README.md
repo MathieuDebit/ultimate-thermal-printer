@@ -125,7 +125,7 @@ make
 sudo ./install
 ```
 
-The `make` command will output an error, but still works:
+The `make` command will output a warning, but still works:
 
 ```bash
 # output of the make command
