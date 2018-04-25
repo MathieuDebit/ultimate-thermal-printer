@@ -39,7 +39,7 @@ network={
     ssid="<NETWORK-NAME>"
     psk="<NETWORK-PASSWORD>"
     key_mgmt=<WPA-PSK/NONE>
-    scan_ssid=1
+    priority=1
 }
 ```
 
