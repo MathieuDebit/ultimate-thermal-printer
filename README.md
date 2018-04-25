@@ -87,10 +87,6 @@ Select `Finish` and reboot the Raspberry Pi with `sudo reboot`. Then connect wit
 sudo apt update -y && sudo apt upgrade -y
 ```
 
-#### Date and Time configuration
-
-...
-
 The Raspberry Pi is now ready to be setup for the printer.
 
 ## System configuration for printer
