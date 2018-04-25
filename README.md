@@ -3,7 +3,7 @@
 
 ## Linux Installation and Configuration
 
-### Download Raspbian Lite
+### Download Raspbian Desktop
 > https://www.raspberrypi.org/downloads/raspbian/
 
 ### Prepare SD Card
@@ -16,7 +16,7 @@ diskutil list
 diskutil unmountDisk /dev/disk2
 
 # Burn image to SD Card
-sudo dd bs=1m if=~/Downloads/2018-04-18-raspbian-stretch-lite.img of=/dev/disk2
+sudo dd bs=1m if=~/Downloads/2018-04-18-raspbian-stretch-lite.img of=/dev/rdisk2
 
 # See the boot volume
 ls -ls /Volumes/boot
@@ -35,8 +35,10 @@ ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
 
 network={
-    ssid="NETWORK-NAME"
-    psk="NETWORK-PASSWORD"
+    ssid="<NETWORK-NAME>"
+    psk="<NETWORK-PASSWORD>"
+    key_mgmt=<WPA-PSK/NONE>
+    scan_ssid=1
 }
 ```
 
