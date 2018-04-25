@@ -4,6 +4,7 @@
 ## Linux Installation and Configuration
 
 ### Download Raspbian
+Works either with Desktop and Lite
 > https://www.raspberrypi.org/downloads/raspbian/
 
 ### Prepare SD Card
@@ -16,7 +17,7 @@ diskutil list
 diskutil unmountDisk /dev/disk2
 
 # Burn image to SD Card
-sudo dd bs=1m if=~/Downloads/2018-04-18-raspbian-stretch-lite.img of=/dev/rdisk2
+sudo dd bs=1m if=path/to/raspbian.img of=/dev/rdisk2
 
 # See the boot volume
 ls -ls /Volumes/boot
@@ -86,6 +87,10 @@ Select `Finish` and reboot the Raspberry Pi with `sudo reboot`. Then connect wit
 sudo apt update -y && sudo apt upgrade -y
 ```
 
+#### Date and Time configuration
+
+...
+
 The Raspberry Pi is now ready to be setup for the printer.
 
 ## System configuration for printer
@@ -124,6 +129,17 @@ make
 sudo ./install
 ```
 
+The `make` command will output an error, but still works:
+
+```bash
+# output of the make command
+
+rastertozj.c:87:16: warning: ‘rasterModeStartCommand’ is static but used in inline function ‘rasterheader’ which is not static
+  outputCommand(rasterModeStartCommand);
+                ^~~~~~~~~~~~~~~~~~~~~~
+gcc  -o rastertozj rastertozj.o -lcupsimage -lcups
+```
+
 Configure printer
 ```bash
 sudo lpadmin -p ZJ-58 -E -v serial:/dev/serial0?baud=19200 -m zjiang/ZJ-58.ppd
@@ -143,3 +159,10 @@ lp -o fit-to-page ./image.png
 ```
 
 The printer is now ready to be used via command line, or over the network.
+
+---
+## Resources
+- https://desertbot.io/blog/setup-pi-zero-w-headless-wifi
+- https://learn.adafruit.com/pi-thermal-printer/raspberry-pi-os-setup
+- https://learn.adafruit.com/networked-thermal-printer-using-cups-and-raspberry-pi
+- https://www.cups.org/doc/sharing.html
