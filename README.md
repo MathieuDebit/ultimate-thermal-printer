@@ -25,7 +25,7 @@ ls -ls /Volumes/boot
 touch /Volumes/boot/ssh
 
 # Add Network Info
-vim /Volumes/boot/wpa_supplicant.conf
+nano /Volumes/boot/wpa_supplicant.conf
 ```
 
 Add the following:
