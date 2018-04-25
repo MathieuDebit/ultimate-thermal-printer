@@ -3,7 +3,7 @@
 
 ## Linux Installation and Configuration
 
-### Download Raspbian Desktop
+### Download Raspbian
 > https://www.raspberrypi.org/downloads/raspbian/
 
 ### Prepare SD Card
@@ -123,3 +123,23 @@ cd zj-58
 make
 sudo ./install
 ```
+
+Configure printer
+```bash
+sudo lpadmin -p ZJ-58 -E -v serial:/dev/serial0?baud=19200 -m zjiang/ZJ-58.ppd
+sudo lpoptions -d ZJ-58
+
+# Share printer on the local network
+cupsctl --share-printers
+```
+
+Reboot the Raspberry Pi: `sudo reboot`.
+
+Test to print something:
+
+```bash
+echo "This is a test." | lp
+lp -o fit-to-page ./image.png
+```
+
+The printer is now ready to be used via command line, or over the network.
