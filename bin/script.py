@@ -18,26 +18,21 @@ print("[INIT] Start script...")
 #
 parser = argparse.ArgumentParser()
 
-parser.add_argument('--pin', type=int, default=12)
 parser.add_argument('--file')
 parser.add_argument('--url')
-parser.add_argument('--publishId', type=int)
 
 args = parser.parse_args()
 
-print("[INIT] GPIO Pin: %s" % args.pin)
 if args.file:
     print("[INIT] File: " + args.file)
 if args.url:
     print("[INIT] Url: " + args.url)
-if args.publishId:
-    print("[INIT] Publish ID: %s" % args.publishId)
 
 #
 # Initialize Firebase
 #
 firebase_admin.initialize_app(
-    credentials.Certificate('/home/pi/Workspace/key.json'),
+    credentials.Certificate('/home/pi/ultimate-thermal-printer/bin/key.json'),
     {
         'storageBucket': 'ultimate-thermal-printer.appspot.com',
         "databaseURL": "https://ultimate-thermal-printer.firebaseio.com"
@@ -54,8 +49,8 @@ print("[INIT] Ignore warning for now")
 GPIO.setmode(GPIO.BOARD)
 print("[INIT] Use physical pin numbering")
 
-GPIO.setup(args.pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-print("[INIT] Set pin %s to be an input pin and set initial value to be pulled low (off)" % args.pin)
+GPIO.setup(12, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+print("[INIT] Set pin 12 to be an input pin and set initial value to be pulled low (off)")
 
 # Pin 31: Green LED
 GPIO.setup(31, GPIO.OUT)
@@ -64,9 +59,9 @@ print("[INIT] PIN 31: Status: (%s)" % GPIO.input(31))
 GPIO.output(31, GPIO.HIGH)
 print("[INIT] PIN 31: Status: (%s)" % GPIO.input(31))
 
-# Pin 29: Red LED
+# Pin 29: Blue LED
 GPIO.setup(29, GPIO.OUT)
-print("[INIT] PIN 29: Red LED")
+print("[INIT] PIN 29: Blue LED")
 GPIO.output(29, GPIO.LOW)
 print("[INIT] PIN 29: Status: (%s)" % GPIO.input(29))
 
@@ -114,24 +109,23 @@ def debounce(wait):
 # Callback function definition
 @debounce(0.5)
 def print_article(channel) :
-    print("[EVENT] Button was pushed on events !!!")
+    print("[EVENT] Button was pushed")
+
+    url = ''
+    filename = 'latest.png'
 
     blob = bucket.get_blob('articles/latest.jpg')
     blob.reload()
-    blob.download_to_filename('latest.jpg')
+    blob.download_to_filename(filename)
 
     url = blob.public_url
 
-    if args.publishId:
-        url = 'https://res.cloudinary.com/legroslabel/image/upload/test-article-%s.png' % args.publishId
     if args.url:
-        url = args.url
+        url = args.url     
+        print("[INFO] URL: " + url)
+        urllib.request.urlretrieve(url, filename);
 
-    print(url)
-
-    # urllib.request.urlretrieve(url, './downloads/dl.png');
-
-    printCommand = 'lpr -o media=Custom.48x297mm ./latest.jpg';
+    printCommand = "lp -o media=Custom.48x3276mm ./" + filename;
 
     subprocess.call(['bash','-c', printCommand])
 
@@ -150,29 +144,27 @@ def print_article(channel) :
 #
 # Events
 #
-GPIO.add_event_detect(args.pin, GPIO.FALLING, callback=print_article)
-print("[INIT] Setup event on pin %s rising edge"% args.pin)
+GPIO.add_event_detect(12, GPIO.FALLING, callback=print_article)
+print("[INIT] Setup event on pin 12 rising edge")
 
 while True:
-    print("[EVENT] Listening to new published articles...")
-    time.sleep(2)
+    try:    
+        time.sleep(2)
+ 
+        if db.reference('published').get() == True:
+            print("[EVENT] New article ready")
+            GPIO.output(29, GPIO.HIGH)
+        else:
+            print("[EVENT] Listening to new published articles...")
+            GPIO.output(29, GPIO.LOW)
 
-    try:
-    	pubished = db.reference('published').get()
-   
+    except KeyboardInterrupt:
+        print('[EXIT] KEYBOARD EXIT')
+        exitProgram()
+
+    except (RuntimeError, ValueError):
+        print("error error")
+
     except Exception as e:
         errorHandling(e, "Error when get published reference", True)
 
-    try :
-        if published == True:
-            GPIO.output(29, GPIO.HIGH)
-        else:
-            GPIO.output(29, GPIO.LOW)
-
-    except (RuntimeError, ValueError):
-            print("error error")
-
-    except KeyboardInterrupt :
-        print('[EXIT] KEYBOARD EXIT')
-        exitProgram()
- 
