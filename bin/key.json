@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "ultimate-thermal-printer",
+  "private_key_id": "2b50883503f4acf605dea9e411670e84687c66e6",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDBXYwnNoHIvJYr\n8V/EAxWLxdxAY0NJ0XHJnkyxUIFyIW7VNb7XlhNbJsIjJo1ckGOYeQpf7U4Nsc2D\n5TrnGLPmUwxH4pDMmU98c006BhnY8UWm3wRzwFbRl1blELOt+Brx0yHMDet0aTHX\n+zH6No2z/67dCG283bcqiVH/MdlzWEh5VTj2ftMiLMyVrz5gOC47vx3/Rs7RadoB\nylDha4T2PcyUMWpPODe1K+HQ+KCJ/JXZiXUklrbpxiRf97zu6DoZO+lIKdT8mNGF\nzsjFXZAHnQt/EqfAi5fRSjBrMIwhi9hnEtwOQAZ/tYgmSImn7YFYTbgnMFKfhfV3\nb3mwo0uzAgMBAAECggEAR9+lwM2Z4Ct5Bkxp9EnRMGsTOzuqPz4CtZaJmz75Xpre\nv5GCpk+6Uh9N+hLSaJ2i54HWQWHLqXt1kJkcE9oyxGIKJo4olGRID1IsWmz6HpFP\n+n7bAMt1eeJvAiX7I6cdHNYFsftakaKoTEeqg/7THRzkunPvlkwzUTRJrjmxQhXg\nU16L3/+91VYrCaiz0ZJ+Nt+BhL1wX172Unaa8g5oP8SKsZXftBPt/SlwojxVxk3h\ngSMUFoRlWt5nd8kIQjPNapO39IgVT24Tn//cR1dmKNPMEY5t4j3M4epkjtio8btR\nMs62Sgp7QCs4t/8gLI+BqkU3suHWMOiUH8xiD7HUQQKBgQD2nXznR1/xMlvcYHef\nNdw74GD/y2i7JRjiD2fUJSXzSVIuvFPlZseXkWLKIoLzg/JGhahFlYFAg6DPhAU6\niztVSzBjxRFTfhjBV+Tmqll9lIG7YnQzEb7I3KVNEhEZsckvUN7uVen3bkIcHmao\nMjt44rqFfFM52sgxEW6P7vuxjQKBgQDIuU2bmU7Tl1SB6Cr0DfXinvxWfIRRamkf\nHAhjl0QIEYEnvcwEwufReo3YQJvtu0L6ATA+K7SSEQZz0RjDAcXIfVLfTHLHsxgI\nohCYd3TsXM6WbIuhJmVopIfmMY3WCXvXQxkuna1atJEsm0M8DQdikOkD1pCp7rTN\neWs+te2CPwKBgQDYzQ6XC8ouckULccr3rhPUl6bueNWzYCOF6GEwwQ+h1x1mdK2U\niEyC1I7ygHB6v85nbOzHb21XV+AxTjCCjRA2JYl+zCo1Ki99GVXj6nIN0lZSc3UP\nyFPepQq0vGNIIWFqNUAmamTq3oVDzv4Uc0SRO1EaNHe97rX7XQXDhybBqQKBgBuZ\nNu2FB8yaCxmNhZJm9P8C4yk1F7BmFCwd251t6AG//mUreIjTD7LCygwI3ieyzsO3\nNB3oPnyy8JMuFdyCOuKVMLbZORLyMgTF28hK7H2vSQxvwkcXE2xu6uygtaLPTQLN\nDAJX1cUZ/LgIZRc1p2VLDW7kqqFi2+NApZlKxGxbAoGBAMZVMx2mG+l52xLWPo9+\nWoo5MILbyFcyjN0K3bJ2zCLHSjMLMscG7OSOGDoOTm+XK0pEUKRHzd68TGGdK1px\nn2shzB6B327NewvjPY06fq3ia0pLjMBvl0rXvruniZkZTVibnmR3hilxM8jmBQu+\n9nSd1lIkUPuQekwi+IlIc4S+\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-yvnct@ultimate-thermal-printer.iam.gserviceaccount.com",
+  "client_id": "104284898966172670147",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-yvnct%40ultimate-thermal-printer.iam.gserviceaccount.com"
+}
