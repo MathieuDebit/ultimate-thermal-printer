@@ -11,15 +11,18 @@ import shlex
 from threading import Timer
 import sys
 
+
 print("[INIT] Start script...")
+
 
 #
 # Arguments
 #
 parser = argparse.ArgumentParser()
 
-parser.add_argument('--file')
-parser.add_argument('--url')
+parser.add_argument('--file', help='use script by passing an image path')
+parser.add_argument('--url', help='use script by passing an image URL')
+parser.add_argument('--cms', nargs='?', const=True, default=False, help='use script by using CMS (firebase)')
 
 args = parser.parse_args()
 
@@ -27,18 +30,9 @@ if args.file:
     print("[INIT] File: " + args.file)
 if args.url:
     print("[INIT] Url: " + args.url)
+if args.cms:
+    print("[INIT] CMS")
 
-#
-# Initialize Firebase
-#
-firebase_admin.initialize_app(
-    credentials.Certificate('/home/pi/ultimate-thermal-printer/bin/key.json'),
-    {
-        'storageBucket': 'ultimate-thermal-printer.appspot.com',
-        "databaseURL": "https://ultimate-thermal-printer.firebaseio.com"
-    }
-)
-bucket = storage.bucket()
 
 #
 # GPIO config
@@ -55,15 +49,29 @@ print("[INIT] Set pin 16 to be an input pin and set initial value to be pulled l
 # Pin 31: Green LED
 GPIO.setup(31, GPIO.OUT)
 print("[INIT] PIN 31: Green LED")
-print("[INIT] PIN 31: Status: (%s)" % GPIO.input(31))
+print("[INIT] PIN 31: Status: %s" % GPIO.input(31))
 GPIO.output(31, GPIO.HIGH)
-print("[INIT] PIN 31: Status: (%s)" % GPIO.input(31))
+print("[INIT] PIN 31: Status: %s" % GPIO.input(31))
 
 # Pin 29: Blue LED
 GPIO.setup(29, GPIO.OUT)
 print("[INIT] PIN 29: Blue LED")
 GPIO.output(29, GPIO.LOW)
-print("[INIT] PIN 29: Status: (%s)" % GPIO.input(29))
+print("[INIT] PIN 29: Status: %s" % GPIO.input(29))
+
+
+#
+# Initialize Firebase
+#
+if args.cms:
+    print("[INIT] initializa Firebase")
+    firebase_admin.initialize_app(
+        credentials.Certificate('/home/pi/ultimate-thermal-printer/bin/key.json'),
+        {
+            'storageBucket': 'ultimate-thermal-printer.appspot.com',
+            "databaseURL": "https://ultimate-thermal-printer.firebaseio.com"
+        }
+    )
 
 
 #
@@ -82,11 +90,7 @@ def errorHandling(error, message, exit):
 
     if exit:
         exitProgram()
-  
 
-#
-# Print
-#
 def debounce(wait):
     """ Decorator that will postpone a functions
         execution until after wait seconds
@@ -105,40 +109,51 @@ def debounce(wait):
         return debounced
     return decorator
 
+
+#
+# Print
+#
+def get_img_from_url():
+    print("[INFO] Retrieve image from URL: " + args.url)
+    urllib.request.urlretrieve(args.url, "bin/tmp/latest.png")
+
+def get_img_from_cms():
+    blob = storage.bucket().get_blob('articles/latest.jpg')
+    print("[INFO] Retrieve image from CMS: " + blob.public_url)
+    blob.reload()
+    blob.download_to_filename("bin/tmp/latest.png")
+
 # add debounce decorator to call event only after stable for 0.5s
 # Callback function definition
 @debounce(0.5)
 def print_article(channel) :
     print("[EVENT] Button was pushed")
 
-    url = ''
-    filename = 'latest.png'
+    if (subprocess.check_output(["bash", "-c", 'lpstat'])) != b'':
+        print("[STATUS] Already printing")
+        return
+    else:    
+        if args.url:
+            get_img_from_url()
 
-    blob = bucket.get_blob('articles/latest.jpg')
-    blob.reload()
-    blob.download_to_filename(filename)
+        if args.cms:
+            get_img_from_cms()
 
-    url = blob.public_url
+        printCommand = "lp -o media=Custom.48x3276mm ./bin/tmp/latest.png"
+        subprocess.call(['bash','-c', printCommand])
 
-    if args.url:
-        url = args.url     
-        print("[INFO] URL: " + url)
-        urllib.request.urlretrieve(url, filename);
-
-    printCommand = "lp -o media=Custom.48x3276mm ./" + filename;
-
-    subprocess.call(['bash','-c', printCommand])
-
-    while True:
-     if (subprocess.check_output(["bash", "-c", 'lpstat'])) != b'':
-         GPIO.output(29, GPIO.HIGH)
-         time.sleep(0.5)
-         GPIO.output(29, GPIO.LOW)
-         time.sleep(0.5)
-     else:
-         db.reference("published").set(False)
-         print('[EVENT] Stop Printing')
-         break
+        while True:
+            if (subprocess.check_output(["bash", "-c", 'lpstat'])) != b'':
+                print('[STATUS] printing...')
+                GPIO.output(29, GPIO.HIGH)
+                time.sleep(0.5)
+                GPIO.output(29, GPIO.LOW)
+                time.sleep(0.5)
+            else:
+                print('[EVENT] Stop Printing')
+                if args.cms:     
+                    db.reference("published").set(False)
+                break
 
 
 #
@@ -146,17 +161,19 @@ def print_article(channel) :
 #
 GPIO.add_event_detect(16, GPIO.FALLING, callback=print_article)
 print("[INIT] Setup event on pin 16 rising edge")
+print("[STATUS] Script ready")
 
 while True:
     try:    
         time.sleep(2)
  
-        if db.reference('published').get() == True:
-            print("[EVENT] New article ready")
-            GPIO.output(29, GPIO.HIGH)
-        else:
-            print("[EVENT] Listening to new published articles...")
-            GPIO.output(29, GPIO.LOW)
+        if args.cms:
+            if db.reference('published').get() == True:
+                print("[EVENT] New article ready")
+                GPIO.output(29, GPIO.HIGH)
+            else:
+                print("[EVENT] Listening to new published articles...")
+                GPIO.output(29, GPIO.LOW)
 
     except KeyboardInterrupt:
         print('[EXIT] KEYBOARD EXIT')
