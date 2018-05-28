@@ -18,7 +18,6 @@ print("[INIT] Set pin 16 to be an input pin and set initial value to be pulled l
 #
 # Pins
 #
-
 pwm_frequency = 100
 
 # Pin 12: Red LED
@@ -41,6 +40,7 @@ print("[INIT] PIN (%s): Blue LED" % blue_pin)
 GPIO.setup(blue_pin, GPIO.OUT)
 blue_pwm = GPIO.PWM(blue_pin, pwm_frequency)
 blue_pwm.start(pwm_frequency)
+
 
 #
 # Utils
@@ -83,7 +83,7 @@ def debounce(wait):
 
 # add debounce decorator to call event only after stable for 0.5s
 # Callback function definition
-@debounce(0.5)
+#@debounce(0.5)
 def change_light(channel) :
     print("change light")
     random_red = random.randint(1, 101)
@@ -95,6 +95,7 @@ def change_light(channel) :
     red_pwm.ChangeDutyCycle(random_red)
     green_pwm.ChangeDutyCycle(random_green)
     blue_pwm.ChangeDutyCycle(random_blue)
+
 
 #
 # Events

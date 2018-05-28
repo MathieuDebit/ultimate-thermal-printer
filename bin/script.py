@@ -49,8 +49,8 @@ print("[INIT] Ignore warning for now")
 GPIO.setmode(GPIO.BOARD)
 print("[INIT] Use physical pin numbering")
 
-GPIO.setup(12, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-print("[INIT] Set pin 12 to be an input pin and set initial value to be pulled low (off)")
+GPIO.setup(16, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+print("[INIT] Set pin 16 to be an input pin and set initial value to be pulled low (off)")
 
 # Pin 31: Green LED
 GPIO.setup(31, GPIO.OUT)
@@ -144,8 +144,8 @@ def print_article(channel) :
 #
 # Events
 #
-GPIO.add_event_detect(12, GPIO.FALLING, callback=print_article)
-print("[INIT] Setup event on pin 12 rising edge")
+GPIO.add_event_detect(16, GPIO.FALLING, callback=print_article)
+print("[INIT] Setup event on pin 16 rising edge")
 
 while True:
     try:    
