@@ -12,8 +12,16 @@ from threading import Timer
 import sys
 
 
+#
+# Init
+#
 print("[INIT] Start script...")
 
+uid = subprocess.check_output(["bash", "-c", "cat /var/lib/dbus/machine-id"], universal_newlines=True).rstrip()
+print("[INIT] Unique machine ID: " + uid)
+
+hostname = subprocess.check_output(["bash", "-c", "hostname"], universal_newlines=True).rstrip()
+print("[INIT] Hostname: " + hostname)
 
 #
 # Arguments
@@ -73,6 +81,9 @@ if args.cms:
         }
     )
 
+    db.reference("printers/" + uid + "/hostname").set(hostname)
+    db.reference("printers/" + uid + "/connexions").push(time.time())
+
 
 #
 # Utils
@@ -118,7 +129,9 @@ def get_img_from_url():
     urllib.request.urlretrieve(args.url, "bin/tmp/latest.png")
 
 def get_img_from_cms():
-    blob = storage.bucket().get_blob('articles/latest.jpg')
+    current_article_id = db.reference('currentArticleId').get()
+    print("[INFO] Current Article ID: " + current_article_id)
+    blob = storage.bucket().get_blob('articles/' + current_article_id + '/' + current_article_id + '.jpg')
     print("[INFO] Retrieve image from CMS: " + blob.public_url)
     blob.reload()
     blob.download_to_filename("bin/tmp/latest.png")
@@ -151,8 +164,10 @@ def print_article(channel) :
                 time.sleep(0.5)
             else:
                 print('[EVENT] Stop Printing')
-                if args.cms:     
+                if args.cms:
                     db.reference("published").set(False)
+                    current_article_id = db.reference('currentArticleId').get()
+                    db.reference("printers/" + uid + "/prints/" + current_article_id).push(time.time())
                 break
 
 
@@ -161,7 +176,7 @@ def print_article(channel) :
 #
 GPIO.add_event_detect(16, GPIO.FALLING, callback=print_article)
 print("[INIT] Setup event on pin 16 rising edge")
-print("[STATUS] Script ready")
+print("[STATUS] Script ready\n")
 
 while True:
     try:    
