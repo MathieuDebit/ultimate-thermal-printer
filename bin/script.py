@@ -54,18 +54,28 @@ print("[INIT] Use physical pin numbering")
 GPIO.setup(16, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 print("[INIT] Set pin 16 to be an input pin and set initial value to be pulled low (off)")
 
-# Pin 31: Green LED
-GPIO.setup(31, GPIO.OUT)
-print("[INIT] PIN 31: Green LED")
-print("[INIT] PIN 31: Status: %s" % GPIO.input(31))
-GPIO.output(31, GPIO.HIGH)
-print("[INIT] PIN 31: Status: %s" % GPIO.input(31))
+pwm_frequency = 100
 
-# Pin 29: Blue LED
-GPIO.setup(29, GPIO.OUT)
-print("[INIT] PIN 29: Blue LED")
-GPIO.output(29, GPIO.LOW)
-print("[INIT] PIN 29: Status: %s" % GPIO.input(29))
+# Pin 12: Red LED
+red_pin = 12
+print("[INIT] PIN %s: Red LED" % red_pin)
+GPIO.setup(red_pin, GPIO.OUT)
+red_pwm = GPIO.PWM(red_pin, pwm_frequency)
+red_pwm.start(pwm_frequency)
+
+# Pin 32: Green LED
+green_pin = 32
+print("[INIT] PIN %s: Green LED" % green_pin)
+GPIO.setup(green_pin, GPIO.OUT)
+green_pwm = GPIO.PWM(green_pin, pwm_frequency)
+green_pwm.start(pwm_frequency)
+
+# Pin 33: Blue LED
+blue_pin = 33
+print("[INIT] PIN %s: Blue LED" % blue_pin)
+GPIO.setup(blue_pin, GPIO.OUT)
+blue_pwm = GPIO.PWM(blue_pin, pwm_frequency)
+blue_pwm.start(pwm_frequency)
 
 
 #
@@ -88,14 +98,19 @@ if args.cms:
 #
 # Utils
 #
+def changeLight(red, green, blue):
+    red_pwm.ChangeDutyCycle(red)
+    green_pwm.ChangeDutyCycle(green)
+    blue_pwm.ChangeDutyCycle(blue)
+
 def exitProgram():
     print("[EXIT] Exit program")
-    GPIO.output(31, GPIO.LOW)
     # Clean up
     GPIO.cleanup()
     sys.exit() 
 
-def errorHandling(error, message, exit):
+def errorHandling(error, message, exit=False):
+    changeLight(100, 0, 0)
     print("[ERROR] " + message)
     print("[ERROR] " + str(error))
 
@@ -126,7 +141,18 @@ def debounce(wait):
 #
 def get_img_from_url():
     print("[INFO] Retrieve image from URL: " + args.url)
-    urllib.request.urlretrieve(args.url, "bin/tmp/latest.png")
+ 
+    try:
+        urllib.request.urlretrieve(args.url, "bin/tmp/latest.png")
+
+    except RuntimeError:
+        errorHandling(RuntimeError, "RuntimeError get_img_from_url")
+
+    except ValueError:
+        errorHandling(ValueError, "ValueError get_img_from_url")
+
+    except Exception as e:
+        errorHandling(e, "Error when retrieving image from URL")
 
 def get_img_from_cms():
     current_article_id = db.reference('currentArticleId').get()
@@ -158,9 +184,9 @@ def print_article(channel) :
         while True:
             if (subprocess.check_output(["bash", "-c", 'lpstat'])) != b'':
                 print('[STATUS] printing...')
-                GPIO.output(29, GPIO.HIGH)
+                changeLight(0, 0, 100)
                 time.sleep(0.5)
-                GPIO.output(29, GPIO.LOW)
+                changeLight(0, 0, 0)
                 time.sleep(0.5)
             else:
                 print('[EVENT] Stop Printing')
@@ -177,6 +203,7 @@ def print_article(channel) :
 GPIO.add_event_detect(16, GPIO.FALLING, callback=print_article)
 print("[INIT] Setup event on pin 16 rising edge")
 print("[STATUS] Script ready\n")
+changeLight(0, 100, 0)
 
 while True:
     try:    
@@ -185,17 +212,20 @@ while True:
         if args.cms:
             if db.reference('published').get() == True:
                 print("[EVENT] New article ready")
-                GPIO.output(29, GPIO.HIGH)
+                changeLight(0, 0, 100)
             else:
                 print("[EVENT] Listening to new published articles...")
-                GPIO.output(29, GPIO.LOW)
+                changeLight(50, 50, 0)
 
     except KeyboardInterrupt:
         print('[EXIT] KEYBOARD EXIT')
         exitProgram()
 
-    except (RuntimeError, ValueError):
-        print("error error")
+    except RuntimeError:
+        errorHandling(RuntimeError, "RuntimeError")
+
+    except ValueError:
+        errorHandling(ValueError, "ValueError")
 
     except Exception as e:
         errorHandling(e, "Error when get published reference", True)
