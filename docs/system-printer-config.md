@@ -86,3 +86,5 @@ Test to print something:
 echo "This is a test." | lp
 lp -o fit-to-page ./image.png
 ```
+
+---
