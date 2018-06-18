@@ -31,7 +31,8 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--file', help='use script by passing an image path')
 parser.add_argument('--url', help='use script by passing an image URL')
 parser.add_argument('--cms', nargs='?', const=True, default=False, help='use script by using CMS (firebase)')
-
+parser.add_argument('--printer', help='print to the named printer')
+parser.add_argument('--media', help='set the page size')
 args = parser.parse_args()
 
 if args.file:
@@ -40,7 +41,10 @@ if args.url:
     print("[INIT] Url: " + args.url)
 if args.cms:
     print("[INIT] CMS")
-
+if args.printer:
+    print("[INIT] Print to " + args.printer)
+if args.media:
+    print("[INIT] Media set to " + args.media)
 
 #
 # GPIO config
@@ -82,7 +86,7 @@ blue_pwm.start(pwm_frequency)
 # Initialize Firebase
 #
 if args.cms:
-    print("[INIT] initializa Firebase")
+    print("[INIT] initialize Firebase")
     firebase_admin.initialize_app(
         credentials.Certificate('/home/pi/ultimate-thermal-printer/bin/key.json'),
         {
@@ -178,7 +182,19 @@ def print_article(channel) :
         if args.cms:
             get_img_from_cms()
 
-        printCommand = "lp -o media=Custom.48x3276mm ./bin/tmp/latest.png"
+        printer = 'ZJ-58'
+        media = 'Custom.48x3276mm'
+
+        if args.printer:
+            printer = args.printer
+        if args.media:
+            media = args.media
+
+        if args.printer == 'TM-T88V':
+            media = 'Custom.64x2000mm'
+
+        printCommand = "lp -o media=" + media + " ./bin/tmp/latest.png -d" + printer
+
         subprocess.call(['bash','-c', printCommand])
 
         while True:
