@@ -65,9 +65,33 @@ The printer named `ZJ-58` is now ready to be used via command line, or over the 
 
 Configuration via the USB port.
 
+### printer drivers
+
+Install printer drivers:
+```bash
+cd ~
+git clone https://github.com/plinth666/epsonsimplecups
+cd epsonsimplecups
+sudo make
+sudo make install
+```
+
+### printer configuration
+
+Find the cups direct usb device for printer:
+```bash
+sudo lpinfo -v | grep 'EPSON'
+```
+
+the command should print something like:
+```bash
+direct usb://EPSON/TM-T88V?serial=4D5135467263910000
+network dnssd://EPSON%20TM-T88V%20%40%20Mathieu%20MacBook%20Pro._ipp._tcp.local/cups?uuid=16da4305-b52f-3e72-6de2-c1d54192b207
+```
+
 Configure printer:
 ```bash
-sudo lpadmin -p TM-T88V -E -v serial:/dev/serial0?baud=19200 -m zjiang/ZJ-58.ppd
+sudo lpadmin -p TM-T88V -E -v usb://EPSON/TM-T88V?serial=4D5135467263910000 -P ppd/EpsonTMT20Simple.ppd
 sudo lpoptions -d TM-T88V
 
 # Share printer on the local network
@@ -84,6 +108,7 @@ Test to print something:
 
 ```bash
 echo "This is a test." | lp
+lp /usr/share/cups/data/testprint
 lp -o fit-to-page ./image.png
 ```
 
