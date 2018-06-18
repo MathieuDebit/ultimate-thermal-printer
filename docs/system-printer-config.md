@@ -19,7 +19,7 @@ Reboot the Raspberry Pi: `sudo reboot`.
 
 ### Printer configuration
 
-Connect the printer to the correct Pins in the Raspberry Pi, and try to print some text:
+Connect the printer to the correct Pins in the Raspberry Pi (pin 6, 8 and 10), and try to print some text:
 
 ```bash
 stty -F /dev/serial0 19200
