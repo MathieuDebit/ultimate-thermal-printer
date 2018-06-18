@@ -86,3 +86,5 @@ sudo apt update -y && sudo apt upgrade -y
 ```
 
 The Raspberry Pi is now ready to be setup for the printer.
+
+---
