@@ -108,7 +108,7 @@ Test to print something:
 
 ```bash
 echo "This is a test." | lp
-lp /usr/share/cups/data/testprint
+lp /usr/share/cups/data/testprint -d <PRINTER-NAME>
 lp -o fit-to-page ./image.png
 ```
 
