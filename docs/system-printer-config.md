@@ -86,7 +86,6 @@ sudo lpinfo -v | grep 'EPSON'
 the command should print something like:
 ```bash
 direct usb://EPSON/TM-T88V?serial=4D5135467263910000
-network dnssd://EPSON%20TM-T88V%20%40%20Mathieu%20MacBook%20Pro._ipp._tcp.local/cups?uuid=16da4305-b52f-3e72-6de2-c1d54192b207
 ```
 
 Configure printer:
